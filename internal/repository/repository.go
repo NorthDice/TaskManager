@@ -1,6 +1,9 @@
 package repository
 
-import "TaskManager/internal/domain/model"
+import (
+	"TaskManager/internal/domain/model"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+)
 
 // Authorization defines the interface for user authentication and authorization operations.
 type Authorization interface {
@@ -25,9 +28,9 @@ type Repository struct {
 }
 
 // NewRepository initializes a new Repository instance with MongoDB implementations.
-func NewRepository() *Repository {
+func NewRepository(client *mongo.Client, dbName string) *Repository {
 	return &Repository{
-		Authorization: NewAuthMongo(),
-		TaskList:      NewTaskListMongo(),
+		Authorization: NewAuthMongo(client, dbName),
+		TaskList:      NewTaskListMongo(client, dbName),
 	}
 }
