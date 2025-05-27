@@ -1,8 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"TaskManager/internal/config"
+	"go.uber.org/zap"
+)
 
 func main() {
 
-	fmt.Println("Hello World")
+	cfg := config.MustLoad()
+
+	logger, _ := zap.NewDevelopment()
+	defer logger.Sync()
+
 }
