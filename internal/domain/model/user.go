@@ -1,9 +1,9 @@
 package model
 
-// User represents a user in the task management system.
+import "go.mongodb.org/mongo-driver/v2/bson"
+
 type User struct {
-	Id       int    `json:"-" bson:"id"`
-	Username string `json:"username" binding:"required" bson:"username"`
-	Password string `json:"password" binding:"required" bson:"password"`
-	Email    string `json:"email" binding:"required,email" bson:"email"`
+	Id       bson.ObjectID `json:"id" bson:"_id,omitempty"`
+	Username string        `bson:"username" json:"username"`
+	Password string        `bson:"password" json:"password"`
 }

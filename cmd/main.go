@@ -29,7 +29,8 @@ func main() {
 		logger.Fatal("Failed to connect to MongoDB", zap.Error(err))
 	}
 
-	repo := repository.NewRepository(db, cfg.MongoDB)
+	repo := repository.NewRepository(db, cfg.MongoDb)
+	logger.Info(cfg.MongoDb)
 	services := service.NewService(repo)
 	handlers := handlers.NewHandler(services, logger)
 

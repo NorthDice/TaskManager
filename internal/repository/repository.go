@@ -8,8 +8,7 @@ import (
 // Authorization defines the interface for user authentication and authorization operations.
 type Authorization interface {
 	CreateUser(user model.User) (int, error)
-	GenerateToken(username, password string) (string, error)
-	ParseToken(tokenString string) (int, error)
+	GetUser(username, password string) (model.User, error)
 }
 
 // TaskList defines the interface for task list operations.

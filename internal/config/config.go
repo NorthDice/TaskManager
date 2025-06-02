@@ -8,7 +8,7 @@ import (
 
 type Config struct {
 	Port    string `yaml:"port" required:"true"`
-	MongoDB string `yaml:"MongoDB" required:"true"`
+	MongoDb string `yaml:"MongoDb" required:"true"`
 }
 
 // MustLoad loads the configuration from the default path.
