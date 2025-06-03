@@ -19,11 +19,15 @@ func (h *Handler) register(e echo.Context) error {
 		return nil
 	}
 
+	log.Info("Registering user", zap.String("username", input.Username))
+
 	id, err := h.services.Authorization.CreateUser(input)
 	if err != nil {
 		newErrorResponse(e, log, http.StatusInternalServerError, err.Error())
 		return nil
 	}
+
+	log.Info("User registered successfully", zap.String("userID", string(id)))
 
 	return e.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
@@ -47,6 +51,7 @@ func (h *Handler) login(e echo.Context) error {
 		newErrorResponse(e, log, http.StatusBadRequest, err.Error())
 		return nil
 	}
+	log.Info("User login attempt", zap.String("username", input.Username))
 
 	token, err := h.services.Authorization.GenerateToken(
 		input.Username,
@@ -56,6 +61,9 @@ func (h *Handler) login(e echo.Context) error {
 		newErrorResponse(e, log, http.StatusInternalServerError, err.Error())
 		return nil
 	}
+
+	log.Info("User logged in successfully")
+
 	return e.JSON(http.StatusOK, map[string]interface{}{
 		"token": token,
 	})
