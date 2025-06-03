@@ -100,13 +100,13 @@ func validateUser(user model.User) error {
 
 // isValidUsername checks if the username contains only valid characters (English letters and digits).
 func isValidUsername(username string) bool {
-	usernameRegexp := regexp.MustCompile(`^[a-zA-Z0-9]$`)
+	usernameRegexp := regexp.MustCompile(`^[a-zA-Z0-9]+$`)
 	return usernameRegexp.MatchString(username)
 }
 
 // isValidPassword checks if the password contains only valid characters (English letters, digits, and specific symbols).
 func isValidPassword(password string) bool {
-	passwordRegexp := regexp.MustCompile(`^[a-zA-Z0-9!_]$`)
+	passwordRegexp := regexp.MustCompile(`^[a-zA-Z0-9!_]+$`)
 	return passwordRegexp.MatchString(password)
 }
 
