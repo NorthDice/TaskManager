@@ -27,7 +27,7 @@ func (h *Handler) InitRoutes(logger *zap.Logger) *echo.Echo {
 	e.POST("/register", h.register)
 	e.POST("/login", h.login)
 
-	auth := e.Group("/tasks")
+	auth := e.Group("/tasks", h.userIdentityMiddleware)
 	auth.GET("", h.getTasks)
 	auth.GET("/:id", h.getTaskByID)
 	auth.POST("", h.createTask)

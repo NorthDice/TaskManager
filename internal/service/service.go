@@ -9,7 +9,7 @@ import (
 type Authorization interface {
 	CreateUser(user model.User) (int, error)
 	GenerateToken(username, password string) (string, error)
-	ParseToken(tokenString string) (int, error)
+	ParseToken(tokenString string) (string, error)
 }
 
 // TaskList defines the interface for task list operations.

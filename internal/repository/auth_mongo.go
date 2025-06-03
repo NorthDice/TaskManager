@@ -61,12 +61,6 @@ func (a *AuthMongo) GetUser(username string, password string) (model.User, error
 		return model.User{}, err
 	}
 
-	// Debug logs
-	fmt.Printf("Retrieved user: %+v\n", user)
-	fmt.Printf("Stored hash: %s\n", user.Password)
-	fmt.Printf("Input password: %s\n", password)
-
-	// Compare the password
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
 		fmt.Printf("Password comparison error: %v\n", err)

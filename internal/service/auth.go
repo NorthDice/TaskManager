@@ -54,8 +54,23 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 }
 
 // ParseToken parses a JWT token and returns the user ID associated with it.
-func (s *AuthService) ParseToken(tokenString string) (int, error) {
-	return 0, nil
+func (s *AuthService) ParseToken(tokenString string) (string, error) {
+	parsedToken, err := jwt.ParseWithClaims(tokenString, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(os.Getenv("SIGNING_KEY")), nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	claims, ok := parsedToken.Claims.(*tokenClaims)
+	if !ok || !parsedToken.Valid {
+		return "", fmt.Errorf("invalid token")
+	}
+
+	return claims.UserId, nil
 }
 
 func generatePasswordHash(password string) string {
