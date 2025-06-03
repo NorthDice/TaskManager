@@ -14,11 +14,11 @@ type Authorization interface {
 
 // TaskList defines the interface for task list operations.
 type TaskList interface {
-	Create(userId int, list model.TaskList) (int, error)
-	GetAll(userId int) ([]model.TaskList, error)
-	GetById(userId int, listId int) (model.TaskList, error)
-	Delete(userId int, listId int) error
-	Update(userId int, listId int, input model.UpdateTaskListInput) error
+	Create(userId string, list model.TaskList) (int, error)
+	GetAll(userId string) ([]model.TaskList, error)
+	GetById(userId string, listId int) (model.TaskList, error)
+	Delete(userId string, listId int) error
+	Update(userId string, listId int, input model.UpdateTaskListInput) error
 }
 
 // Service defines the interface for the service layer, combining authorization and task list operations.

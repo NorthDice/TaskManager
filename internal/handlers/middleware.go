@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strings"
@@ -37,4 +38,18 @@ func (h *Handler) userIdentityMiddleware(next echo.HandlerFunc) echo.HandlerFunc
 		c.Set(userCtx, userId)
 		return next(c)
 	}
+}
+
+func getUserId(c echo.Context) (string, error) {
+	id := c.Get(userCtx)
+	if id == nil {
+		return "", errors.New("user not found in context")
+	}
+
+	idStr, ok := id.(string)
+	if !ok {
+		return "", errors.New("user id is of invalid type")
+	}
+
+	return idStr, nil
 }

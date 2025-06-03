@@ -18,26 +18,26 @@ func NewTaskListService(repo repository.TaskList) *TaskListService {
 }
 
 // Create creates a new task list for the specified user.
-func (s *TaskListService) Create(userId int, list model.TaskList) (int, error) {
+func (s *TaskListService) Create(userId string, list model.TaskList) (int, error) {
 	return s.repo.Create(userId, list)
 }
 
 // GetAll retrieves all task lists for the specified user.
-func (s *TaskListService) GetAll(userId int) ([]model.TaskList, error) {
+func (s *TaskListService) GetAll(userId string) ([]model.TaskList, error) {
 	return s.repo.GetAll(userId)
 }
 
 // GetById retrieves a specific task list by its ID for the specified user.
-func (s *TaskListService) GetById(userId int, listId int) (model.TaskList, error) {
+func (s *TaskListService) GetById(userId string, listId int) (model.TaskList, error) {
 	return s.repo.GetById(userId, listId)
 }
 
 // Delete deletes a specific task list by its ID for the specified user.
-func (s *TaskListService) Delete(userId int, listId int) error {
+func (s *TaskListService) Delete(userId string, listId int) error {
 	return s.repo.Delete(userId, listId)
 }
 
 // Update updates a specific task list by its ID for the specified user.
-func (s *TaskListService) Update(userId int, listId int, input model.UpdateTaskListInput) error {
+func (s *TaskListService) Update(userId string, listId int, input model.UpdateTaskListInput) error {
 	return s.repo.Update(userId, listId, input)
 }
