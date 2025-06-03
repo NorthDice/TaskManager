@@ -7,6 +7,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"os"
+	"regexp"
 	"time"
 )
 
@@ -31,6 +32,9 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 
 // CreateUser creates a new user in the system.
 func (s *AuthService) CreateUser(user model.User) (int, error) {
+	if err := validateUser(user); err != nil {
+		return 0, err
+	}
 	user.Password = generatePasswordHash(user.Password)
 	return s.repo.CreateUser(user)
 }
@@ -73,6 +77,40 @@ func (s *AuthService) ParseToken(tokenString string) (string, error) {
 	return claims.UserId, nil
 }
 
+// validateUser checks if the user data meets the required validation criteria.
+func validateUser(user model.User) error {
+	if len(user.Username) < 3 || len(user.Username) > 30 {
+		return fmt.Errorf("username must be between 3 and 30 characters")
+	}
+
+	if !isValidUsername(user.Username) {
+		return fmt.Errorf("username can contain only English letters and digits")
+	}
+
+	if len(user.Password) < 6 {
+		return fmt.Errorf("password must be at least 6 characters")
+	}
+
+	if !isValidPassword(user.Password) {
+		return fmt.Errorf("password can contain only English letters,digits and symbols (_ , !)")
+	}
+
+	return nil
+}
+
+// isValidUsername checks if the username contains only valid characters (English letters and digits).
+func isValidUsername(username string) bool {
+	usernameRegexp := regexp.MustCompile(`^[a-zA-Z0-9]$`)
+	return usernameRegexp.MatchString(username)
+}
+
+// isValidPassword checks if the password contains only valid characters (English letters, digits, and specific symbols).
+func isValidPassword(password string) bool {
+	passwordRegexp := regexp.MustCompile(`^[a-zA-Z0-9!_]$`)
+	return passwordRegexp.MatchString(password)
+}
+
+// generatePasswordHash hashes the user's password using bcrypt.
 func generatePasswordHash(password string) string {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
