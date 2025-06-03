@@ -7,9 +7,6 @@ import (
 	"time"
 )
 
-// MongoDB constants
-const usersCollection = "users"
-
 // NewMongo creates a new MongoDB client and connects to the database using the provided URI.
 func NewMongo(URI string) (*mongo.Client, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
